@@ -178,3 +178,6 @@ nnoremap <c-h> <c-w>>
 nnoremap <c-l> <c-w><
 nnoremap <c-b> <c-w>-
 nnoremap <c-k> <c-w>+
+
+set runtimepath+=/home/eden/.vim/L9-1.1
+set runtimepath+=/home/eden/.vim/AutoComplPop-2.14.1
