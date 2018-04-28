@@ -21,7 +21,7 @@ endif
 " Uncomment the following to have Vim load indentation rules and plugins
 " according to the detected filetype.
 "if has("autocmd")
-filetype plugin indent on
+    filetype plugin indent on
 "endif
 
 "colorscheme koehler
@@ -44,6 +44,7 @@ set tabstop=4
 set softtabstop=4
 " set shiftwidth=4
 set expandtab           " use whitespace instead of tab
+"set noexpandtab
 set autoindent
 set smartindent
 set cindent shiftwidth=4
@@ -166,7 +167,7 @@ map <c-y> <ESC>:let @+=expand('%')<CR>
 set path=.,,/usr/include
 
 "delete remain blank in one line; besides, replace tab with 4 spaces
-map <c-k>  <ESC>:1,$s/\s\+$//g<CR>:1,$s/\t/    /g<CR>
+map <s-b>  <ESC>:1,$s/\s\+$//g<CR>:1,$s/\t/    /g<CR>
 
 
 "use SHIFT not CTRL
@@ -181,3 +182,6 @@ nnoremap <c-k> <c-w>+
 
 set runtimepath+=/home/eden/.vim/L9-1.1
 set runtimepath+=/home/eden/.vim/AutoComplPop-2.14.1
+
+" delete ^M
+map <s-r>  <ESC>:1,$s/\r/\r/g<CR>
