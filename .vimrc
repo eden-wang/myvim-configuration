@@ -176,8 +176,10 @@ map <S-u> <c-u>
 "resize window
 nnoremap <c-h> <c-w>>
 nnoremap <c-l> <c-w><
-nnoremap <c-b> <c-w>-
+"nnoremap <c-b> <c-w>-
 nnoremap <c-k> <c-w>+
 
-set runtimepath+=/home/eden/.vim/L9-1.1
-set runtimepath+=/home/eden/.vim/AutoComplPop-2.14.1
+set runtimepath+=$HOME/.vim/L9-1.1
+set runtimepath+=$HOME/.vim/AutoComplPop-2.14.1
+"set runtimepath of plugin jedi-vim
+set runtimepath+=$HOME/.vim/jedi-vim
