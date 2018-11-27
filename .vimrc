@@ -184,6 +184,8 @@ set runtimepath+=$HOME/.vim/L9-1.1
 set runtimepath+=$HOME/.vim/AutoComplPop-2.14.1
 "set runtimepath of plugin jedi-vim
 set runtimepath+=$HOME/.vim/jedi-vim
+"plugin nerdtree
+set runtimepath+=$HOME/.vim/nerdtree
 
 " delete ^M
 map <s-r>  <ESC>:1,$s/\r/\r/g<CR>

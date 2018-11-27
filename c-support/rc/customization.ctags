@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:762398be81dc0a0f2ed4c1d61c4cd3956257286d53ba43aafcdaf54b19065a68
-size 200
+
+--regex-make=/^([^:# \t]+)[ \t]*:($|[^=]+)/\1/t,targets/
+--regex-make=/^include[ \t]+(.+)/\1/i,includes/
+
+--langdef=qmake
+--langmap=qmake:+.pro
+--regex-qmake=/^([[:upper:]_]+)/\1/t,SystemVariables/
+
