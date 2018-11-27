@@ -187,3 +187,8 @@ set runtimepath+=$HOME/.vim/jedi-vim
 
 " delete ^M
 map <s-r>  <ESC>:1,$s/\r/\r/g<CR>
+
+"statusline
+set statusline=
+set statusline+=%8*\ %=\ %l/%L(%p%%)\               "光标所在行号/总行数 (百分比)
+set statusline+=%9*\ %c\                            "光标所在列
