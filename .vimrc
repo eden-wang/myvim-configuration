@@ -1,3 +1,4 @@
+let mapleader = ","
 " Uncomment the next line to make Vim more Vi-compatible
 " NOTE: debian.vim sets 'nocompatible'.  Setting 'compatible' changes numerous
 " options, so any other options should be set AFTER setting 'compatible'.
@@ -36,7 +37,7 @@ set showcmd     " Show (partial) command in status line.
 "set ignorecase     " Do case insensitive matching
 set smartcase       " Do smart case matching
 "set incsearch      " Incremental search
-"set autowrite      " Automatically save before commands like :next,:make and so on
+set autowrite      " Automatically save before commands like :next,:make and so on
 "set hidden             " Hide buffers when they are abandoned
 set mouse=a     " Enable mouse usage (all modes)
 set nu
@@ -69,9 +70,9 @@ filetype plugin on
 map <C-F8> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 "set tags=tags; ";不可省略，表示若当前目录中不存在tags， 则在父目录中寻找
 " stl (for C++)
-set tags+=~/.vim/tags/tags
+"set tags+=~/.vim/tags/tags
 " standard library(/usr/include)
-set tags+=~/.vim/tags/systags
+"set tags+=~/.vim/tags/systags
 
 "set for cctree
 map <C-F12> :CCTreeLoadXRefDB /home/wangpq/program/svn-codes/swift_trunk_modules/cctree.out<CR>
@@ -122,36 +123,36 @@ let Tlist_GainFocus_On_ToggleOpen=1
 ""inoremap " <c-r>=QuoteDelim('"')<CR>
 ""inoremap ' <c-r>=QuoteDelim("'")<CR>
 
-function ClosePair(char)
-	if getline('.')[col('.') - 1] == a:char
-		return "\<Right>"
-	else
-		return a:char
-	endif
-endf
-
-function CloseBracket()
-	if match(getline(line('.') + 1), '\s*}') < 0
-		return "\<CR>}"
-	else
-		return "\<Esc>j0f}a"
-	endif
-endf
-
-function QuoteDelim(char)
-	let line = getline('.')
-	let col = col('.')
-	if line[col - 2] == "\\"
-		"Inserting a quoted quotation mark into the string
-		return a:char
-	elseif line[col - 1] == a:char
-		"Escaping out of the string
-		return "\<Right>"
-	else
-		"Starting a string
-		return a:char.a:char."\<Esc>i"
-	endif
-endf
+"function ClosePair(char)
+"	if getline('.')[col('.') - 1] == a:char
+"		return "\<Right>"
+"	else
+"		return a:char
+"	endif
+"endf
+"
+"function CloseBracket()
+"	if match(getline(line('.') + 1), '\s*}') < 0
+"		return "\<CR>}"
+"	else
+"		return "\<Esc>j0f}a"
+"	endif
+"endf
+"
+"function QuoteDelim(char)
+"	let line = getline('.')
+"	let col = col('.')
+"	if line[col - 2] == "\\"
+"		"Inserting a quoted quotation mark into the string
+"		return a:char
+"	elseif line[col - 1] == a:char
+"		"Escaping out of the string
+"		return "\<Right>"
+"	else
+"		"Starting a string
+"		return a:char.a:char."\<Esc>i"
+"	endif
+"endf
 
 
 " Source a global configuration file if available
@@ -168,6 +169,8 @@ set path=.,,/usr/include
 
 "delete remain blank in one line; besides, replace tab with 4 spaces
 map <s-b>  <ESC>:1,$s/\s\+$//g<CR>:1,$s/\t/    /g<CR>
+" change / to .(for python)
+map <c-g> <ESC>:s/\//./g<CR>
 
 
 "use SHIFT not CTRL
@@ -186,6 +189,8 @@ set runtimepath+=$HOME/.vim/AutoComplPop-2.14.1
 set runtimepath+=$HOME/.vim/jedi-vim
 "plugin nerdtree
 set runtimepath+=$HOME/.vim/nerdtree
+"vim-go
+set runtimepath+=$HOME/.vim/vim-go
 
 " delete ^M
 map <s-r>  <ESC>:1,$s/\r/\r/g<CR>
@@ -194,3 +199,25 @@ map <s-r>  <ESC>:1,$s/\r/\r/g<CR>
 set statusline=
 set statusline+=%8*\ %=\ %l/%L(%p%%)\               "光标所在行号/总行数 (百分比)
 set statusline+=%9*\ %c\                            "光标所在列
+
+
+map <C-n> :cnext<CR>
+map <C-p> :cprevious<CR>
+nnoremap <leader>c :cclose<CR>
+
+autocmd FileType go nmap <leader>q  <Plug>(go-run)
+
+" run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+"
+autocmd FileType go nmap <Leader>z <Plug>(go-coverage-browser)
+autocmd FileType go nmap <Leader>g :GoDef<CR>
