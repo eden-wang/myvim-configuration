@@ -168,7 +168,7 @@ map <c-y> <ESC>:let @+=expand('%')<CR>
 set path=.,,/usr/include
 
 "delete remain blank in one line; besides, replace tab with 4 spaces
-map <s-b>  <ESC>:1,$s/\s\+$//g<CR>:1,$s/\t/    /g<CR>
+"map xxx  <ESC>:1,$s/\s\+$//g<CR>:1,$s/\t/    /g<CR>
 " change / to .(for python)
 map <c-g> <ESC>:s/\//./g<CR>
 
@@ -191,6 +191,9 @@ set runtimepath+=$HOME/.vim/jedi-vim
 set runtimepath+=$HOME/.vim/nerdtree
 "vim-go
 set runtimepath+=$HOME/.vim/vim-go
+" ctrlp conflict with '<C-p>' map
+"set runtimepath+=$HOME/.vim/ctrlp.vim
+set runtimepath+=$HOME/.vim/plugin/vim-fugitive/
 
 " delete ^M
 map <s-r>  <ESC>:1,$s/\r/\r/g<CR>
@@ -199,13 +202,14 @@ map <s-r>  <ESC>:1,$s/\r/\r/g<CR>
 set statusline=
 set statusline+=%8*\ %=\ %l/%L(%p%%)\               "光标所在行号/总行数 (百分比)
 set statusline+=%9*\ %c\                            "光标所在列
+set statusline+=%{FugitiveStatusline()}
 
-
-map <C-n> :cnext<CR>
-map <C-p> :cprevious<CR>
+" nore means no recursive
+nnoremap <C-n> :cnext<CR>
+nnoremap <C-p> :cprevious<CR>
 nnoremap <leader>c :cclose<CR>
 
-autocmd FileType go nmap <leader>q  <Plug>(go-run)
+autocmd FileType go nmap <leader>t  <Plug>(go-run)
 
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
@@ -221,3 +225,10 @@ autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 "
 autocmd FileType go nmap <Leader>z <Plug>(go-coverage-browser)
 autocmd FileType go nmap <Leader>g :GoDef<CR>
+autocmd FileType go nmap <Leader>h :GoDefPop<CR>
+
+"input use 
+map <leader>q <ESC>q:i
+
+" go use tab instead of space, go fmt required
+autocmd FileType go set noexpandtab
