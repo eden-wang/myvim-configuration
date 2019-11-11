@@ -1,4 +1,3 @@
-let mapleader = ","
 " Uncomment the next line to make Vim more Vi-compatible
 " NOTE: debian.vim sets 'nocompatible'.  Setting 'compatible' changes numerous
 " options, so any other options should be set AFTER setting 'compatible'.
@@ -26,6 +25,20 @@ endif
 "endif
 
 "colorscheme koehler
+
+
+call plug#begin('~/.vim/plugged')
+
+" Any valid git URL is allowed
+Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
+
+
+" Initialize plugin system
+call plug#end()
+
+" config vim-instant-markdown
+let g:instant_markdown_slow = 1
+let g:instant_markdown_autostart = 0 "use :InstantMarkdownPreview and :InstantMarkdownStop
 
 
 "filetype plugin indent on
@@ -94,7 +107,10 @@ set fileencodings=utf-8,gbk
 "inoremap <F5> <C-R>=strftime("%F %T")<CR>
 
 "share clipboard
-set clipboard=unnamedplus
+" linux
+"set clipboard=unnamedplus
+" mac
+set clipboard=unnamed
 "show status
 set laststatus=2
 
@@ -232,3 +248,49 @@ map <leader>q <ESC>q:i
 
 " go use tab instead of space, go fmt required
 autocmd FileType go set noexpandtab
+
+" Rename tabs to show tab number.
+" (Based on http://stackoverflow.com/questions/5927952/whats-implementation-of-vims-default-tabline-function)
+if exists("+showtabline")
+    function! MyTabLine()
+        let s = ''
+        let wn = ''
+        let t = tabpagenr()
+        let i = 1
+        while i <= tabpagenr('$')
+            let buflist = tabpagebuflist(i)
+            let winnr = tabpagewinnr(i)
+            let s .= '%' . i . 'T'
+            let s .= (i == t ? '%1*' : '%2*')
+            let s .= ' '
+            let wn = tabpagewinnr(i,'$')
+
+            let s .= '%#TabNum#'
+            let s .= i
+            " let s .= '%*'
+            let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
+            let bufnr = buflist[winnr - 1]
+            let file = bufname(bufnr)
+            let buftype = getbufvar(bufnr, 'buftype')
+            if buftype == 'nofile'
+                if file =~ '\/.'
+                    let file = substitute(file, '.*\/\ze.', '', '')
+                endif
+            else
+                let file = fnamemodify(file, ':p:t')
+            endif
+            if file == ''
+                let file = '[No Name]'
+            endif
+            let s .= ' ' . file . ' '
+            let i = i + 1
+        endwhile
+        let s .= '%T%#TabLineFill#%='
+        let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
+        return s
+    endfunction
+    set stal=2
+    set tabline=%!MyTabLine()
+    set showtabline=1
+    highlight link TabNum Special
+endif
